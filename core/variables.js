@@ -145,18 +145,17 @@ Blockly.Variables.flyoutCategoryBlocks = function(workspace) {
       var block = Blockly.Xml.textToDom(blockText).firstChild;
       xmlList.push(block);
     }
-    if (Blockly.Blocks['math_change']) {
-      var gap = Blockly.Blocks['variables_get'] ? 20 : 8;
+
+    // Generate the `variables_incdec` block instead of `math_change` block.
+    if (Blockly.Blocks['variables_incdec']) {
+      var gap = Blockly.Blocks['variables_get'] ? 8 : 24;
       var blockText = '<xml>' +
-          '<block type="math_change" gap="' + gap + '">' +
-          Blockly.Variables.generateVariableFieldXml_(firstVariable) +
-          '<value name="DELTA">' +
-          '<shadow type="math_number">' +
-          '<field name="NUM">1</field>' +
-          '</shadow>' +
-          '</value>' +
-          '</block>' +
-          '</xml>';
+            '<block type="variables_incdec" gap="' + gap + '">' +
+            '<field name="OP">INCREMENT</field>' +
+            Blockly.Variables.generateVariableFieldXml_(firstVariable) +
+            '<value name="DELTA"></value>' +
+            '</block>' +
+            '</xml>';
       var block = Blockly.Xml.textToDom(blockText).firstChild;
       xmlList.push(block);
     }

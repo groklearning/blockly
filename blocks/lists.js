@@ -79,23 +79,6 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
     "tooltip": "%{BKY_LISTS_REPEAT_TOOLTIP}",
     "helpUrl": "%{BKY_LISTS_REPEAT_HELPURL}"
   },
-  // Block for reversing a list.
-  {
-    "type": "lists_reverse",
-    "message0": "%{BKY_LISTS_REVERSE_MESSAGE0}",
-    "args0": [
-      {
-        "type": "input_value",
-        "name": "LIST",
-        "check": "Array"
-      }
-    ],
-    "output": "Array",
-    "inputsInline": true,
-    "colour": "%{BKY_LISTS_HUE}",
-    "tooltip": "%{BKY_LISTS_REVERSE_TOOLTIP}",
-    "helpUrl": "%{BKY_LISTS_REVERSE_HELPURL}"
-  },
   // Block for checking if a list is empty
   {
     "type": "lists_isEmpty",
@@ -733,46 +716,6 @@ Blockly.Blocks['lists_getSublist'] = {
     if (Blockly.Msg.LISTS_GET_SUBLIST_TAIL) {
       this.moveInputBefore('TAIL', null);
     }
-  }
-};
-
-Blockly.Blocks['lists_sort'] = {
-  /**
-   * Block for sorting a list.
-   * @this Blockly.Block
-   */
-  init: function() {
-    this.jsonInit({
-      "message0": Blockly.Msg.LISTS_SORT_TITLE,
-      "args0": [
-        {
-          "type": "field_dropdown",
-          "name": "TYPE",
-          "options": [
-            [Blockly.Msg.LISTS_SORT_TYPE_NUMERIC, "NUMERIC"],
-            [Blockly.Msg.LISTS_SORT_TYPE_TEXT, "TEXT"],
-            [Blockly.Msg.LISTS_SORT_TYPE_IGNORECASE, "IGNORE_CASE"]
-          ]
-        },
-        {
-          "type": "field_dropdown",
-          "name": "DIRECTION",
-          "options": [
-            [Blockly.Msg.LISTS_SORT_ORDER_ASCENDING, "1"],
-            [Blockly.Msg.LISTS_SORT_ORDER_DESCENDING, "-1"]
-          ]
-        },
-        {
-          "type": "input_value",
-          "name": "LIST",
-          "check": "Array"
-        }
-      ],
-      "output": "Array",
-      "colour": Blockly.Blocks.lists.HUE,
-      "tooltip": Blockly.Msg.LISTS_SORT_TOOLTIP,
-      "helpUrl": Blockly.Msg.LISTS_SORT_HELPURL
-    });
   }
 };
 

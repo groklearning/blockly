@@ -407,7 +407,16 @@ Blockly.Blocks['text_prompt_ext'] = {
    * @this Blockly.Block
    */
   updateType_: function(newOp) {
-    this.outputConnection.setCheck(newOp == 'NUMBER' ? 'Number' : 'String');
+    if (newOp == 'NUMBER') {
+      this.outputConnection.setCheck('Number');
+      this.setColour(Blockly.Msg.MATH_HUE);
+    } else if (newOp == 'FLOAT') {
+      this.outputConnection.setCheck('Float');
+      this.setColour(Blockly.Msg.MATH_HUE);
+    } else {
+      this.outputConnection.setCheck('String');
+      this.setColour(Blockly.Msg.TEXTS_HUE);
+    }
   },
   /**
    * Create XML to represent the output type.
@@ -529,30 +538,6 @@ Blockly.Blocks['text_replace'] = {
   }
 };
 
-Blockly.Blocks['text_reverse'] = {
-  /**
-   * Block for reversing a string.
-   * @this Blockly.Block
-   */
-  init: function() {
-    this.jsonInit({
-      "message0": Blockly.Msg.TEXT_REVERSE_MESSAGE0,
-      "args0": [
-        {
-          "type": "input_value",
-          "name": "TEXT",
-          "check": "String"
-        }
-      ],
-      "output": "String",
-      "inputsInline": true,
-      "colour": Blockly.Blocks.texts.HUE,
-      "tooltip": Blockly.Msg.TEXT_REVERSE_TOOLTIP,
-      "helpUrl": Blockly.Msg.TEXT_REVERSE_HELPURL
-    });
-  }
-};
-
 /**
  *
  * @mixin
@@ -605,18 +590,10 @@ Blockly.Constants.Text.QUOTE_IMAGE_MIXIN = {
    * closing double quote. The selected quote will be adapted for RTL blocks.
    * @param {boolean} open If the image should be open quote (“ in LTR).
    *                       Otherwise, a closing quote is used (” in LTR).
-   * @returns {!Blockly.FieldImage} The new field.
+   * @returns {!string} The new field.
    */
   newQuote_: function(open) {
-    var isLeft = this.RTL? !open : open;
-    var dataUri = isLeft ?
-      this.QUOTE_IMAGE_LEFT_DATAURI :
-      this.QUOTE_IMAGE_RIGHT_DATAURI;
-    return new Blockly.FieldImage(
-      dataUri,
-      this.QUOTE_IMAGE_WIDTH,
-      this.QUOTE_IMAGE_HEIGHT,
-      isLeft ? '\u201C' : '\u201D');
+    return '"';
   }
 };
 

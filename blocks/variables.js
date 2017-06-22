@@ -83,6 +83,36 @@ Blockly.defineBlocksWithJsonArray([  // BEGIN JSON EXTRACT
     "tooltip": "%{BKY_VARIABLES_SET_TOOLTIP}",
     "helpUrl": "%{BKY_VARIABLES_SET_HELPURL}",
     "extensions": ["contextMenu_variableSetterGetter"]
+  },
+  // Block for variable increment/decrement.
+  {
+    "type": "variables_incdec",
+    "message0": "%{BKY_VARIABLES_INCDEC_TITLE}",
+    "args0": [
+      {
+        "type": "field_dropdown",
+        "name": "OP",
+        "options": [
+          ["%{BKY_VARIABLES_INCDEC_INCREMENT}", "INCREMENT"],
+          ["%{BKY_VARIABLES_INCDEC_DECREMENT}", "DECREMENT"]
+        ],
+      },
+      {
+        "type": "field_variable",
+        "name": "VAR",
+        "variable": "%{BKY_VARIABLES_DEFAULT_NAME}"
+      },
+      {
+        "type": "input_value",
+        "name": "DELTA",
+        "check": ["Number", "Float", "String"]
+      },
+    ],
+    "inputsInline": true,
+    "previousStatement": null,
+    "nextStatement": null,
+    "colour": "%{BKY_VARIABLES_HUE}",
+    "tooltip": "%{BKY_VARIABLES_INCDEC_TOOLTIP}"
   }
 ]);  // END JSON EXTRACT (Do not delete this comment.)
 

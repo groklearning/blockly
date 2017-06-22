@@ -4,6 +4,7 @@ npm-debug.log
 .settings
 .project
 *.pyc
+.*.sw[opq]
 *.komodoproject
 /nbproject/private/
 /msg/json/en.json
