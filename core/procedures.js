@@ -167,6 +167,19 @@ Blockly.Procedures.rename = function(name) {
  */
 Blockly.Procedures.flyoutCategory = function(workspace) {
   var xmlList = [];
+  if (Blockly.Blocks['procedures_def_noargs_noreturn']) {
+    // <block type="procedures_def_noargs_noreturn" gap="16">
+    //     <field name="NAME">do something</field>
+    // </block>
+    var block = goog.dom.createDom('block');
+    block.setAttribute('type', 'procedures_def_noargs_noreturn');
+    block.setAttribute('gap', 16);
+    var nameField = goog.dom.createDom('field', null,
+        Blockly.Msg.PROCEDURES_DEFNORETURN_PROCEDURE);
+    nameField.setAttribute('name', 'NAME');
+    block.appendChild(nameField);
+    xmlList.push(block);
+  }
   if (Blockly.Blocks['procedures_defnoreturn']) {
     // <block type="procedures_defnoreturn" gap="16">
     //     <field name="NAME">do something</field>

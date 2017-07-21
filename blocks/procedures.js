@@ -448,6 +448,40 @@ Blockly.Blocks['procedures_mutatorarg'] = {
   }
 };
 
+
+Blockly.Blocks['procedures_def_noargs_noreturn'] = {
+  /**
+   * Block for creating a procedure with no return value and no arguments.
+   * This is not a mutator block (but masquerades as one) - the procedure can be renamed.
+   * @this Blockly.Block
+   */
+  init: function() {
+    var nameField = new Blockly.FieldTextInput('', Blockly.Procedures.rename);
+    nameField.setSpellcheck(false);
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.PROCEDURES_DEF_NOARGS_NORETURN_TITLE)
+        .appendField(nameField, 'NAME');
+    this.setColour(Blockly.Blocks.procedures.HUE);
+    this.setTooltip(Blockly.Msg.PROCEDURES_DEF_NOARGS_NORETURN_TOOLTIP);
+    this.hasReturnValue_ = false;
+    this.arguments_ = [];
+    this.setStatements_(true);
+    this.statementConnection_ = null;
+    console.log("My tooltip", Blockly.Msg.PROCEDURES_DEF_NOARGS_NORETURN_TOOLTIP);
+  },
+  setStatements_: Blockly.Blocks['procedures_defnoreturn'].setStatements_,
+  getProcedureDef: Blockly.Blocks['procedures_defnoreturn'].getProcedureDef,
+  updateParams_: Blockly.Blocks['procedures_defnoreturn'].updateParams_,
+  mutationToDom: Blockly.Blocks['procedures_defnoreturn'].mutationToDom,
+  domToMutation: Blockly.Blocks['procedures_defnoreturn'].domToMutation,
+  decompose: Blockly.Blocks['procedures_defnoreturn'].decompose,
+  compose: Blockly.Blocks['procedures_defnoreturn'].compose,
+  getVars: Blockly.Blocks['procedures_defnoreturn'].getVars,
+  renameVar: Blockly.Blocks['procedures_defnoreturn'].renameVar,
+  customContextMenu: Blockly.Blocks['procedures_defnoreturn'].customContextMenu,
+  callType_: 'procedures_callnoreturn',
+};
+
 Blockly.Blocks['procedures_callnoreturn'] = {
   /**
    * Block for calling a procedure with no return value.
