@@ -467,7 +467,6 @@ Blockly.Blocks['procedures_def_noargs_noreturn'] = {
     this.arguments_ = [];
     this.setStatements_(true);
     this.statementConnection_ = null;
-    console.log("My tooltip", Blockly.Msg.PROCEDURES_DEF_NOARGS_NORETURN_TOOLTIP);
   },
   setStatements_: Blockly.Blocks['procedures_defnoreturn'].setStatements_,
   getProcedureDef: Blockly.Blocks['procedures_defnoreturn'].getProcedureDef,
