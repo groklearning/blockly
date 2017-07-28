@@ -792,7 +792,7 @@ Blockly.Blocks['procedures_callnoreturn'] = {
     };
     options.push(option);
   },
-  defType_: 'procedures_defnoreturn'
+  defType_: 'procedures_def_noargs_noreturn'
 };
 
 Blockly.Blocks['procedures_callreturn'] = {
