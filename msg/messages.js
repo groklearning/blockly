@@ -1102,6 +1102,7 @@ Blockly.Msg.PROCEDURES_DEFNORETURN_HELPURL = 'https://en.wikipedia.org/wiki/Subr
 /// [https://blockly-demo.appspot.com/static/apps/code/index.html?lang=en#c84aoc this sample
 /// function definition].
 Blockly.Msg.PROCEDURES_DEFNORETURN_TITLE = 'to';
+Blockly.Msg.PROCEDURES_DEF_NOARGS_NORETURN_TITLE = 'to';
 /// default name - This acts as a placeholder for the name of a function on a
 /// function definition block, as shown on
 /// [https://blockly-demo.appspot.com/static/apps/code/index.html?lang=en#w7cfju this block].
@@ -1122,6 +1123,7 @@ Blockly.Msg.PROCEDURES_CALL_BEFORE_PARAMS = 'with:';
 Blockly.Msg.PROCEDURES_DEFNORETURN_DO = '';
 /// tooltip
 Blockly.Msg.PROCEDURES_DEFNORETURN_TOOLTIP = 'Creates a function with no output.';
+Blockly.Msg.PROCEDURES_DEF_NOARGS_NORETURN_TOOLTIP = 'Creates a function you can call.';
 /// Placeholder text that the user is encouraged to replace with a description of what their function does.
 Blockly.Msg.PROCEDURES_DEFNORETURN_COMMENT = 'Describe this function...';
 /// url - Information about defining [https://en.wikipedia.org/wiki/Subroutine functions] that have return values.

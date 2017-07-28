@@ -167,6 +167,19 @@ Blockly.Procedures.rename = function(name) {
  */
 Blockly.Procedures.flyoutCategory = function(workspace) {
   var xmlList = [];
+  if (Blockly.Blocks['procedures_def_noargs_noreturn']) {
+    // <block type="procedures_def_noargs_noreturn" gap="16">
+    //     <field name="NAME">do something</field>
+    // </block>
+    var block = goog.dom.createDom('block');
+    block.setAttribute('type', 'procedures_def_noargs_noreturn');
+    block.setAttribute('gap', 16);
+    var nameField = goog.dom.createDom('field', null,
+        Blockly.Msg.PROCEDURES_DEFNORETURN_PROCEDURE);
+    nameField.setAttribute('name', 'NAME');
+    block.appendChild(nameField);
+    xmlList.push(block);
+  }
   if (Blockly.Blocks['procedures_defnoreturn']) {
     // <block type="procedures_defnoreturn" gap="16">
     //     <field name="NAME">do something</field>
@@ -178,7 +191,7 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
         Blockly.Msg.PROCEDURES_DEFNORETURN_PROCEDURE);
     nameField.setAttribute('name', 'NAME');
     block.appendChild(nameField);
-    xmlList.push(block);
+    //xmlList.push(block);
   }
   if (Blockly.Blocks['procedures_defreturn']) {
     // <block type="procedures_defreturn" gap="16">
@@ -191,14 +204,14 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
         Blockly.Msg.PROCEDURES_DEFRETURN_PROCEDURE);
     nameField.setAttribute('name', 'NAME');
     block.appendChild(nameField);
-    xmlList.push(block);
+    //xmlList.push(block);
   }
   if (Blockly.Blocks['procedures_ifreturn']) {
     // <block type="procedures_ifreturn" gap="16"></block>
     var block = goog.dom.createDom('block');
     block.setAttribute('type', 'procedures_ifreturn');
     block.setAttribute('gap', 16);
-    xmlList.push(block);
+    //xmlList.push(block);
   }
   if (xmlList.length) {
     // Add slightly larger gap between system blocks and user calls.

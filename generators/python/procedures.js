@@ -34,10 +34,10 @@ Blockly.Python['procedures_defreturn'] = function(block) {
   // First, add a 'global' statement for every variable that is not shadowed by
   // a local parameter.
   var globals = [];
-  var variables = workspace.getAllVariables();
+  var variables = block.workspace.getAllVariables();
   for (var i = 0, varName; varName = variables[i]; i++) {
     if (block.arguments_.indexOf(varName) == -1) {
-      globals.push(Blockly.Python.variableDB_.getName(varName,
+      globals.push(Blockly.Python.variableDB_.getName(varName.name,
           Blockly.Variables.NAME_TYPE));
     }
   }
@@ -78,6 +78,9 @@ Blockly.Python['procedures_defreturn'] = function(block) {
 // a procedure with a return value.
 Blockly.Python['procedures_defnoreturn'] =
     Blockly.Python['procedures_defreturn'];
+
+// Define a procedure that takes no arguments and with no return value.
+Blockly.Python['procedures_def_noargs_noreturn'] = Blockly.Python['procedures_defnoreturn'];
 
 Blockly.Python['procedures_callreturn'] = function(block) {
   // Call a procedure with a return value.
