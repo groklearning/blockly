@@ -48,6 +48,7 @@ Blockly.JavaScript.addReservedWords(
     'break,case,catch,continue,debugger,default,delete,do,else,finally,for,function,if,in,instanceof,new,return,switch,this,throw,try,typeof,var,void,while,with,' +
     'class,enum,export,extends,import,super,implements,interface,let,package,private,protected,public,static,yield,' +
     'const,null,true,false,' +
+    'await,of,arguments,' +
     // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects
     'Array,ArrayBuffer,Boolean,Date,decodeURI,decodeURIComponent,encodeURI,encodeURIComponent,Error,eval,EvalError,Float32Array,Float64Array,Function,Infinity,Int16Array,Int32Array,Int8Array,isFinite,isNaN,Iterator,JSON,Math,NaN,Number,Object,parseFloat,parseInt,RangeError,ReferenceError,RegExp,StopIteration,String,SyntaxError,TypeError,Uint16Array,Uint32Array,Uint8Array,Uint8ClampedArray,undefined,uneval,URIError,' +
     // https://developer.mozilla.org/en/DOM/window
@@ -160,7 +161,7 @@ Blockly.JavaScript.init = function(workspace) {
           Blockly.Variables.NAME_TYPE);
     }
     Blockly.JavaScript.definitions_['variables'] =
-        'var ' + defvars.join(', ') + ';';
+        'let ' + defvars.join(', ') + ';';
   }
 };
 

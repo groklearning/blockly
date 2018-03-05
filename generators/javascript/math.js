@@ -269,7 +269,7 @@ Blockly.JavaScript['math_on_list'] = function(block) {
           'mathMedian',
           ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
               '(myList) {',
-            '  var localList = myList.filter(function (x) ' +
+            '  let localList = myList.filter(function (x) ' +
               '{return typeof x == \'number\';});',
             '  if (!localList.length) return null;',
             '  localList.sort(function(a, b) {return b - a;});',
@@ -292,13 +292,13 @@ Blockly.JavaScript['math_on_list'] = function(block) {
           'mathModes',
           ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
               '(values) {',
-            '  var modes = [];',
-            '  var counts = [];',
-            '  var maxCount = 0;',
+            '  let modes = [];',
+            '  let counts = [];',
+            '  let maxCount = 0;',
             '  for (var i = 0; i < values.length; i++) {',
-            '    var value = values[i];',
-            '    var found = false;',
-            '    var thisCount;',
+            '    let value = values[i];',
+            '    let found = false;',
+            '    let thisCount;',
             '    for (var j = 0; j < counts.length; j++) {',
             '      if (counts[j][0] === value) {',
             '        thisCount = ++counts[j][1];',
@@ -328,10 +328,10 @@ Blockly.JavaScript['math_on_list'] = function(block) {
           'mathStandardDeviation',
           ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
               '(numbers) {',
-            '  var n = numbers.length;',
+            '  let n = numbers.length;',
             '  if (!n) return null;',
-            '  var mean = numbers.reduce(function(x, y) {return x + y;}) / n;',
-            '  var variance = 0;',
+            '  let mean = numbers.reduce(function(x, y) {return x + y;}) / n;',
+            '  let variance = 0;',
             '  for (var j = 0; j < n; j++) {',
             '    variance += Math.pow(numbers[j] - mean, 2);',
             '  }',
@@ -347,7 +347,7 @@ Blockly.JavaScript['math_on_list'] = function(block) {
           'mathRandomList',
           ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
               '(list) {',
-            '  var x = Math.floor(Math.random() * list.length);',
+            '  let x = Math.floor(Math.random() * list.length);',
             '  return list[x];',
             '}']);
       list = Blockly.JavaScript.valueToCode(block, 'LIST',
@@ -395,7 +395,7 @@ Blockly.JavaScript['math_random_int'] = function(block) {
           '(a, b) {',
        '  if (a > b) {',
        '    // Swap a and b to ensure a is smaller.',
-       '    var c = a;',
+       '    let c = a;',
        '    a = b;',
        '    b = c;',
        '  }',
