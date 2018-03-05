@@ -48,7 +48,7 @@ Blockly.JavaScript['controls_repeat_ext'] = function(block) {
   if (!repeats.match(/^\w+$/) && !Blockly.isNumber(repeats)) {
     var endVar = Blockly.JavaScript.variableDB_.getDistinctName(
         'repeat_end', Blockly.Variables.NAME_TYPE);
-    code += 'var ' + endVar + ' = ' + repeats + ';\n';
+    code += 'let ' + endVar + ' = ' + repeats + ';\n';
   }
   code += 'for (var ' + loopVar + ' = 0; ' +
       loopVar + ' < ' + endVar + '; ' +
@@ -108,19 +108,19 @@ Blockly.JavaScript['controls_for'] = function(block) {
     if (!argument0.match(/^\w+$/) && !Blockly.isNumber(argument0)) {
       startVar = Blockly.JavaScript.variableDB_.getDistinctName(
           variable0 + '_start', Blockly.Variables.NAME_TYPE);
-      code += 'var ' + startVar + ' = ' + argument0 + ';\n';
+      code += 'let ' + startVar + ' = ' + argument0 + ';\n';
     }
     var endVar = argument1;
     if (!argument1.match(/^\w+$/) && !Blockly.isNumber(argument1)) {
       var endVar = Blockly.JavaScript.variableDB_.getDistinctName(
           variable0 + '_end', Blockly.Variables.NAME_TYPE);
-      code += 'var ' + endVar + ' = ' + argument1 + ';\n';
+      code += 'let ' + endVar + ' = ' + argument1 + ';\n';
     }
     // Determine loop direction at start, in case one of the bounds
     // changes during loop execution.
     var incVar = Blockly.JavaScript.variableDB_.getDistinctName(
         variable0 + '_inc', Blockly.Variables.NAME_TYPE);
-    code += 'var ' + incVar + ' = ';
+    code += 'let ' + incVar + ' = ';
     if (Blockly.isNumber(increment)) {
       code += Math.abs(increment) + ';\n';
     } else {
