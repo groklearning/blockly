@@ -66,6 +66,9 @@ Blockly.JavaScript['procedures_defreturn'] = function(block) {
 Blockly.JavaScript['procedures_defnoreturn'] =
     Blockly.JavaScript['procedures_defreturn'];
 
+// Define a procedure that takes no arguments and with no return value.
+Blockly.JavaScript['procedures_def_noargs_noreturn'] = Blockly.JavaScript['procedures_defnoreturn'];
+
 Blockly.JavaScript['procedures_callreturn'] = function(block) {
   // Call a procedure with a return value.
   var funcName = Blockly.JavaScript.variableDB_.getName(
