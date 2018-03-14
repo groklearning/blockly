@@ -481,6 +481,56 @@ Blockly.Blocks['procedures_def_noargs_noreturn'] = {
   callType_: 'procedures_callnoreturn',
 };
 
+
+Blockly.Blocks['procedures_def_nesting_event_handler'] = {
+  /**
+   * Block for creating an event handler to be inserted inside a <script> tag (no args, no return value).
+   * This is not a mutator block (but masquerades as one) - the procedure can be renamed.
+   * @this Blockly.Block
+   */
+  init: function() {
+    var nameField = new Blockly.FieldTextInput('', Blockly.Procedures.rename);
+    nameField.setSpellcheck(false);
+    this.appendDummyInput()
+        .appendField(Blockly.Msg.PROCEDURES_DEF_NESTING_EVENT_HANDLER_TITLE)
+        .appendField(nameField, 'NAME')
+        .appendField('', 'PARAMS');
+    this.appendStatementInput('STACK')
+        .setCheck('Code');
+    this.setColour(Blockly.Blocks.procedures.HUE);
+    this.setTooltip(Blockly.Msg.PROCEDURES_DEF_NESTING_EVENT_HANDLER_TOOLTIP);
+    this.hasReturnValue_ = true;
+    this.arguments_ = [];
+    this.setPreviousStatement(true, ['Code', 'FunctionDefinition']);
+    this.setNextStatement(true, ['Code', 'FunctionDefinition']);
+    this.hasStatements_ = true;
+    this.setStatements_(true);
+    this.statementConnection_ = null;
+  },
+  setStatements_: Blockly.Blocks['procedures_defnoreturn'].setStatements_,
+  /**
+   * Return the signature of this procedure definition.
+   * @return {!Array} Tuple containing three elements:
+   *     - the name of the defined procedure,
+   *     - a list of all its arguments,
+   *     - that it DOES have a return value.
+   * @this Blockly.Block
+   */
+  getProcedureDef: function() {
+    return [this.getFieldValue('NAME'), this.arguments_, true];
+  },
+  updateParams_: Blockly.Blocks['procedures_defnoreturn'].updateParams_,
+  mutationToDom: Blockly.Blocks['procedures_defnoreturn'].mutationToDom,
+  domToMutation: Blockly.Blocks['procedures_defnoreturn'].domToMutation,
+  decompose: Blockly.Blocks['procedures_defnoreturn'].decompose,
+  compose: Blockly.Blocks['procedures_defnoreturn'].compose,
+  getVars: Blockly.Blocks['procedures_defnoreturn'].getVars,
+  renameVar: Blockly.Blocks['procedures_defnoreturn'].renameVar,
+  customContextMenu: Blockly.Blocks['procedures_defnoreturn'].customContextMenu,
+  callType_: 'procedures_set_event_handler',
+};
+
+
 Blockly.Blocks['procedures_callnoreturn'] = {
   /**
    * Block for calling a procedure with no return value.
@@ -823,6 +873,37 @@ Blockly.Blocks['procedures_callreturn'] = {
   customContextMenu:
       Blockly.Blocks['procedures_callnoreturn'].customContextMenu,
   defType_: 'procedures_defreturn'
+};
+
+
+Blockly.Blocks['procedures_set_event_handler'] = {
+  /**
+   * Block for setting up an event handler, like onclick="someFunc()".
+   * This is very much like calling a procedure with a return value.
+   * @this Blockly.Block
+   */
+  init: function() {
+    this.appendDummyInput('TOPROW')
+        .appendField('', 'NAME');
+    this.setOutput(true);
+    this.setColour(Blockly.Blocks.procedures.HUE);
+    // Tooltip is set in domToMutation.
+    this.arguments_ = [];
+    this.quarkConnections_ = {};
+    this.quarkIds_ = null;
+  },
+  getProcedureCall: Blockly.Blocks['procedures_callnoreturn'].getProcedureCall,
+  renameProcedure: Blockly.Blocks['procedures_callnoreturn'].renameProcedure,
+  setProcedureParameters_:
+      Blockly.Blocks['procedures_callnoreturn'].setProcedureParameters_,
+  updateShape_: Blockly.Blocks['procedures_callnoreturn'].updateShape_,
+  mutationToDom: Blockly.Blocks['procedures_callnoreturn'].mutationToDom,
+  domToMutation: Blockly.Blocks['procedures_callnoreturn'].domToMutation,
+  renameVar: Blockly.Blocks['procedures_callnoreturn'].renameVar,
+  onchange: Blockly.Blocks['procedures_callnoreturn'].onchange,
+  customContextMenu:
+      Blockly.Blocks['procedures_callnoreturn'].customContextMenu,
+  defType_: 'procedures_def_nesting_event_handler'
 };
 
 Blockly.Blocks['procedures_ifreturn'] = {

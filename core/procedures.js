@@ -180,6 +180,19 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
     block.appendChild(nameField);
     xmlList.push(block);
   }
+  if (Blockly.Blocks['procedures_def_nesting_event_handler']) {
+    // <block type="procedures_def_nesting_event_handler" gap="16">
+    //     <field name="NAME">do something</field>
+    // </block>
+    var block = goog.dom.createDom('block');
+    block.setAttribute('type', 'procedures_def_nesting_event_handler');
+    block.setAttribute('gap', 16);
+    var nameField = goog.dom.createDom('field', null,
+        Blockly.Msg.PROCEDURES_DEFRETURN_PROCEDURE);  // FIXME!
+    nameField.setAttribute('name', 'NAME');
+    block.appendChild(nameField);
+    xmlList.push(block);
+  }
   if (Blockly.Blocks['procedures_defnoreturn']) {
     // <block type="procedures_defnoreturn" gap="16">
     //     <field name="NAME">do something</field>
@@ -218,33 +231,38 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
     xmlList[xmlList.length - 1].setAttribute('gap', 24);
   }
 
-  function populateProcedures(procedureList, templateName) {
-    for (var i = 0; i < procedureList.length; i++) {
-      var name = procedureList[i][0];
-      var args = procedureList[i][1];
-      // <block type="procedures_callnoreturn" gap="16">
-      //   <mutation name="do something">
-      //     <arg name="x"></arg>
-      //   </mutation>
-      // </block>
-      var block = goog.dom.createDom('block');
-      block.setAttribute('type', templateName);
-      block.setAttribute('gap', 16);
-      var mutation = goog.dom.createDom('mutation');
-      mutation.setAttribute('name', name);
-      block.appendChild(mutation);
-      for (var j = 0; j < args.length; j++) {
-        var arg = goog.dom.createDom('arg');
-        arg.setAttribute('name', args[j]);
-        mutation.appendChild(arg);
+  // Ensure that any procedure definition blocks have their matching call blocks also defined.
+  function populateProcedures(root) {
+    var blocks = root.getAllBlocks();
+    for (var i = 0; i < blocks.length; i++) {
+      if (blocks[i].getProcedureDef) {
+        // This block is a procedure definition, so populate the call block it matches with.
+        var templateName = blocks[i].callType_;
+        var tuple = blocks[i].getProcedureDef();
+        var name = tuple[0];
+        var args = tuple[1];
+        // <block type="procedures_callnoreturn" gap="16">
+        //   <mutation name="do something">
+        //     <arg name="x"></arg>
+        //   </mutation>
+        // </block>
+        var block = goog.dom.createDom('block');
+        block.setAttribute('type', templateName);
+        block.setAttribute('gap', 16);
+        var mutation = goog.dom.createDom('mutation');
+        mutation.setAttribute('name', name);
+        block.appendChild(mutation);
+        for (var j = 0; j < args.length; j++) {
+          var arg = goog.dom.createDom('arg');
+          arg.setAttribute('name', args[j]);
+          mutation.appendChild(arg);
+        }
+        xmlList.push(block);
       }
-      xmlList.push(block);
     }
   }
 
-  var tuple = Blockly.Procedures.allProcedures(workspace);
-  populateProcedures(tuple[0], 'procedures_callnoreturn');
-  populateProcedures(tuple[1], 'procedures_callreturn');
+  populateProcedures(workspace);
   return xmlList;
 };
 
@@ -305,8 +323,9 @@ Blockly.Procedures.mutateCallers = function(defBlock) {
  * @return {Blockly.Block} The procedure definition block, or null not found.
  */
 Blockly.Procedures.getDefinition = function(name, workspace) {
-  // Assume that a procedure definition is a top block.
-  var blocks = workspace.getTopBlocks(false);
+  // We can no longer assume that a procedure definition is a top block
+  // since script blocks can contain procedure definitions.
+  var blocks = workspace.getAllBlocks();
   for (var i = 0; i < blocks.length; i++) {
     if (blocks[i].getProcedureDef) {
       var tuple = blocks[i].getProcedureDef();

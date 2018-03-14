@@ -29,8 +29,8 @@ goog.provide('Blockly.JavaScript.procedures');
 goog.require('Blockly.JavaScript');
 
 
-Blockly.JavaScript['procedures_defreturn'] = function(block) {
-  // Define a procedure with a return value.
+// Defines a function with optional arguments and a return value.
+function generateDefinition(block) {
   var funcName = Blockly.JavaScript.variableDB_.getName(
       block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
   var branch = Blockly.JavaScript.statementToCode(block, 'STACK');
@@ -55,6 +55,15 @@ Blockly.JavaScript['procedures_defreturn'] = function(block) {
   }
   var code = 'function ' + funcName + '(' + args.join(', ') + ') {\n' +
       branch + returnValue + '}';
+  return code;
+}
+
+
+// Most procedures will be top-level blocks that get hoisted up above the scope.
+// These need to be manually scrubbed.
+Blockly.JavaScript['procedures_defreturn'] = function(block) {
+  var code = generateDefinition(block);
+  // Define a procedure with a return value.
   code = Blockly.JavaScript.scrub_(block, code);
   // Add % so as not to collide with helper functions in definitions list.
   Blockly.JavaScript.definitions_['%' + funcName] = code;
@@ -65,6 +74,13 @@ Blockly.JavaScript['procedures_defreturn'] = function(block) {
 // a procedure with a return value.
 Blockly.JavaScript['procedures_defnoreturn'] =
     Blockly.JavaScript['procedures_defreturn'];
+
+Blockly.JavaScript['procedures_def_nesting_event_handler'] = function(block) {
+  // Nesting event handlers are designed to sit inside a <script> tag, so we should
+  // NOT hoist the definition up above the main body of code. The following sets up the code:
+  var code = generateDefinition(block) + '\n';
+  return code;
+}
 
 Blockly.JavaScript['procedures_callreturn'] = function(block) {
   // Call a procedure with a return value.
@@ -78,6 +94,20 @@ Blockly.JavaScript['procedures_callreturn'] = function(block) {
   var code = funcName + '(' + args.join(', ') + ')';
   return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };
+
+Blockly.JavaScript['procedures_set_event_handler'] = function(block) {
+  // Setting an event handler -- onclick="doFoo()" -- is just like calling a function.
+  // We additionally wrap the call inside quotes, however, to make sure it can be used inside an attribute setter.
+  var funcName = Blockly.JavaScript.variableDB_.getName(
+      block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
+  var args = [];
+  for (var i = 0; i < block.arguments_.length; i++) {
+    args[i] = Blockly.JavaScript.valueToCode(block, 'ARG' + i,
+        Blockly.JavaScript.ORDER_COMMA) || 'null';
+  }
+  var code = Blockly.JavaScript.quote_(funcName + '(' + args.join(', ') + ')');
+  return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+}
 
 Blockly.JavaScript['procedures_callnoreturn'] = function(block) {
   // Call a procedure with no return value.
