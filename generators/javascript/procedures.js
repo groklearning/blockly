@@ -95,19 +95,9 @@ Blockly.JavaScript['procedures_callreturn'] = function(block) {
   return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };
 
-Blockly.JavaScript['procedures_set_event_handler'] = function(block) {
-  // Setting an event handler -- onclick="doFoo()" -- is just like calling a function.
-  // We additionally wrap the call inside quotes, however, to make sure it can be used inside an attribute setter.
-  var funcName = Blockly.JavaScript.variableDB_.getName(
-      block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
-  var args = [];
-  for (var i = 0; i < block.arguments_.length; i++) {
-    args[i] = Blockly.JavaScript.valueToCode(block, 'ARG' + i,
-        Blockly.JavaScript.ORDER_COMMA) || 'null';
-  }
-  var code = Blockly.JavaScript.quote_(funcName + '(' + args.join(', ') + ')');
-  return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
-}
+// Setting an event handler -- onclick="doFoo()" -- is just like calling a function.
+Blockly.JavaScript['procedures_set_event_handler'] =
+    Blockly.JavaScript['procedures_callreturn'];
 
 Blockly.JavaScript['procedures_callnoreturn'] = function(block) {
   // Call a procedure with no return value.
