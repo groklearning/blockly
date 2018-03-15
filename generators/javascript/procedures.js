@@ -29,8 +29,10 @@ goog.provide('Blockly.JavaScript.procedures');
 goog.require('Blockly.JavaScript');
 
 
-// Defines a function with optional arguments and a return value.
-function generateDefinition(block) {
+Blockly.JavaScript['procedures_defreturn'] = function(block, options={}) {
+  // Specify noHoist = true to avoid hoisting the code block up into the definitions scope.
+  var noHoist = options.noHoist || false;
+  // Define a procedure with a return value.
   var funcName = Blockly.JavaScript.variableDB_.getName(
       block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
   var branch = Blockly.JavaScript.statementToCode(block, 'STACK');
@@ -55,17 +57,9 @@ function generateDefinition(block) {
   }
   var code = 'function ' + funcName + '(' + args.join(', ') + ') {\n' +
       branch + returnValue + '}';
-  return code;
-}
-
-
-// Most procedures will be top-level blocks that get hoisted up above the scope.
-// These need to be manually scrubbed.
-Blockly.JavaScript['procedures_defreturn'] = function(block) {
-  var funcName = Blockly.JavaScript.variableDB_.getName(
-      block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
-  var code = generateDefinition(block);
-  // Define a procedure with a return value.
+  if (noHoist) {
+    return code;
+  }
   code = Blockly.JavaScript.scrub_(block, code);
   // Add % so as not to collide with helper functions in definitions list.
   Blockly.JavaScript.definitions_['%' + funcName] = code;
@@ -77,11 +71,10 @@ Blockly.JavaScript['procedures_defreturn'] = function(block) {
 Blockly.JavaScript['procedures_defnoreturn'] =
     Blockly.JavaScript['procedures_defreturn'];
 
-Blockly.JavaScript['procedures_def_nesting_event_handler'] = function(block) {
-  // Nesting event handlers are designed to sit inside a <script> tag, so we should
-  // NOT hoist the definition up above the main body of code. The following sets up the code:
-  var code = generateDefinition(block) + '\n';
-  return code;
+// Nesting event handlers are designed to sit inside a <script> tag, so we should
+// NOT hoist the definition up above the main body of code.
+Blockly.JavaScript['procedures_def_nesting_event_handler'] = (block) => {
+    return Blockly.JavaScript['procedures_defreturn'](block, {noHoist: true}) + '\n';
 }
 
 // Define a procedure that takes no arguments and with no return value.

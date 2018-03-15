@@ -29,7 +29,9 @@ goog.provide('Blockly.Python.procedures');
 goog.require('Blockly.Python');
 
 
-Blockly.Python['procedures_defreturn'] = function(block) {
+Blockly.Python['procedures_defreturn'] = function(block, options={}) {
+  // Specify noHoist = true to avoid hoisting the code block up into the definitions scope.
+  var noHoist = options.noHoist || false;
   // Define a procedure with a return value.
   // First, add a 'global' statement for every variable that is not shadowed by
   // a local parameter.
@@ -68,6 +70,9 @@ Blockly.Python['procedures_defreturn'] = function(block) {
   }
   var code = 'def ' + funcName + '(' + args.join(', ') + '):\n' +
       globals + branch + returnValue;
+  if (noHoist) {
+    return code;
+  }
   code = Blockly.Python.scrub_(block, code);
   // Add % so as not to collide with helper functions in definitions list.
   Blockly.Python.definitions_['%' + funcName] = code;
@@ -78,6 +83,11 @@ Blockly.Python['procedures_defreturn'] = function(block) {
 // a procedure with a return value.
 Blockly.Python['procedures_defnoreturn'] =
     Blockly.Python['procedures_defreturn'];
+
+// The event handler block here will not be hoisted up out of the scope it appears in.
+Blockly.Python['procedures_def_nesting_event_handler'] = (block) => {
+    return Blockly.Python['procedures_defreturn'](block, {noHoist: true});
+}
 
 // Define a procedure that takes no arguments and with no return value.
 Blockly.Python['procedures_def_noargs_noreturn'] = Blockly.Python['procedures_defnoreturn'];
@@ -94,6 +104,11 @@ Blockly.Python['procedures_callreturn'] = function(block) {
   var code = funcName + '(' + args.join(', ') + ')';
   return [code, Blockly.Python.ORDER_FUNCTION_CALL];
 };
+
+// Setting an event handler -- onclick="doFoo()" -- is just like calling a function.
+// This block does not make a lot of sense for python, but can be used just like a regular call-function block.
+Blockly.Python['procedures_set_event_handler'] =
+    Blockly.Python['procedures_callreturn'];
 
 Blockly.Python['procedures_callnoreturn'] = function(block) {
   // Call a procedure with no return value.
