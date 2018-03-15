@@ -170,18 +170,18 @@ Blockly.JavaScript['math_number_property'] = function(block) {
         'mathIsPrime',
         ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ + '(n) {',
          '  // https://en.wikipedia.org/wiki/Primality_test#Naive_methods',
-         '  if (n == 2 || n == 3) {',
+         '  if (n === 2 || n === 3) {',
          '    return true;',
          '  }',
          '  // False if n is NaN, negative, is 1, or not whole.',
          '  // And false if n is divisible by 2 or 3.',
-         '  if (isNaN(n) || n <= 1 || n % 1 != 0 || n % 2 == 0 ||' +
-            ' n % 3 == 0) {',
+         '  if (isNaN(n) || n <= 1 || n % 1 !== 0 || n % 2 === 0 ||' +
+            ' n % 3 === 0) {',
          '    return false;',
          '  }',
          '  // Check all the numbers of form 6k +/- 1, up to sqrt(n).',
          '  for (var x = 6; x <= Math.sqrt(n) + 1; x += 6) {',
-         '    if (n % (x - 1) == 0 || n % (x + 1) == 0) {',
+         '    if (n % (x - 1) === 0 || n % (x + 1) === 0) {',
          '      return false;',
          '    }',
          '  }',
@@ -192,13 +192,13 @@ Blockly.JavaScript['math_number_property'] = function(block) {
   }
   switch (dropdown_property) {
     case 'EVEN':
-      code = number_to_check + ' % 2 == 0';
+      code = number_to_check + ' % 2 === 0';
       break;
     case 'ODD':
-      code = number_to_check + ' % 2 == 1';
+      code = number_to_check + ' % 2 === 1';
       break;
     case 'WHOLE':
-      code = number_to_check + ' % 1 == 0';
+      code = number_to_check + ' % 1 === 0';
       break;
     case 'POSITIVE':
       code = number_to_check + ' > 0';
@@ -209,7 +209,7 @@ Blockly.JavaScript['math_number_property'] = function(block) {
     case 'DIVISIBLE_BY':
       var divisor = Blockly.JavaScript.valueToCode(block, 'DIVISOR',
           Blockly.JavaScript.ORDER_MODULUS) || '0';
-      code = number_to_check + ' % ' + divisor + ' == 0';
+      code = number_to_check + ' % ' + divisor + ' === 0';
       break;
   }
   return [code, Blockly.JavaScript.ORDER_EQUALITY];
@@ -221,7 +221,7 @@ Blockly.JavaScript['math_change'] = function(block) {
       Blockly.JavaScript.ORDER_ADDITION) || '0';
   var varName = Blockly.JavaScript.variableDB_.getName(
       block.getFieldValue('VAR'), Blockly.Variables.NAME_TYPE);
-  return varName + ' = (typeof ' + varName + ' == \'number\' ? ' + varName +
+  return varName + ' = (typeof ' + varName + ' === \'number\' ? ' + varName +
       ' : 0) + ' + argument0 + ';\n';
 };
 
@@ -270,10 +270,10 @@ Blockly.JavaScript['math_on_list'] = function(block) {
           ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
               '(myList) {',
             '  let localList = myList.filter(function (x) ' +
-              '{return typeof x == \'number\';});',
+              '{return typeof x === \'number\';});',
             '  if (!localList.length) return null;',
             '  localList.sort(function(a, b) {return b - a;});',
-            '  if (localList.length % 2 == 0) {',
+            '  if (localList.length % 2 === 0) {',
             '    return (localList[localList.length / 2 - 1] + ' +
               'localList[localList.length / 2]) / 2;',
             '  } else {',
@@ -313,7 +313,7 @@ Blockly.JavaScript['math_on_list'] = function(block) {
             '    maxCount = Math.max(thisCount, maxCount);',
             '  }',
             '  for (var j = 0; j < counts.length; j++) {',
-            '    if (counts[j][1] == maxCount) {',
+            '    if (counts[j][1] === maxCount) {',
             '        modes.push(counts[j][0]);',
             '    }',
             '  }',

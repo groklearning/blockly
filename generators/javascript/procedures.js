@@ -62,6 +62,8 @@ function generateDefinition(block) {
 // Most procedures will be top-level blocks that get hoisted up above the scope.
 // These need to be manually scrubbed.
 Blockly.JavaScript['procedures_defreturn'] = function(block) {
+  var funcName = Blockly.JavaScript.variableDB_.getName(
+      block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
   var code = generateDefinition(block);
   // Define a procedure with a return value.
   code = Blockly.JavaScript.scrub_(block, code);
@@ -81,6 +83,9 @@ Blockly.JavaScript['procedures_def_nesting_event_handler'] = function(block) {
   var code = generateDefinition(block) + '\n';
   return code;
 }
+
+// Define a procedure that takes no arguments and with no return value.
+Blockly.JavaScript['procedures_def_noargs_noreturn'] = Blockly.JavaScript['procedures_defnoreturn'];
 
 Blockly.JavaScript['procedures_callreturn'] = function(block) {
   // Call a procedure with a return value.
