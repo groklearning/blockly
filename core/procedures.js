@@ -170,7 +170,8 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
 
   // The workspace contains the toolbox tree -- this is a whitelist of DEFINITION blocks to include
   // If blank, we should include ONLY the default Grok function block (for backwards compatibility).
-  for (const xml of workspace.options.languageTree.childNodes) {
+  var childNodes = workspace.options.languageTree.childNodes;
+  for (var i = 0, xml; xml = childNodes[i]; i++) {
     // Search for the category that defines functions
     if (xml.tagName) {
       var tagName = xml.tagName.toUpperCase();
