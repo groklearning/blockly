@@ -167,84 +167,108 @@ Blockly.Procedures.rename = function(name) {
  */
 Blockly.Procedures.flyoutCategory = function(workspace) {
   var xmlList = [];
-  if (Blockly.Blocks['procedures_def_noargs_noreturn']) {
-    // <block type="procedures_def_noargs_noreturn" gap="16">
-    //     <field name="NAME">do something</field>
-    // </block>
-    var block = goog.dom.createDom('block');
-    block.setAttribute('type', 'procedures_def_noargs_noreturn');
-    block.setAttribute('gap', 16);
-    var nameField = goog.dom.createDom('field', null,
-        Blockly.Msg.PROCEDURES_DEFNORETURN_PROCEDURE);
-    nameField.setAttribute('name', 'NAME');
-    block.appendChild(nameField);
-    xmlList.push(block);
+
+  // The workspace contains the toolbox tree -- this is a whitelist of DEFINITION blocks to include
+  // If blank, we should include ONLY the default Grok function block (for backwards compatibility).
+  var childNodes = workspace.options.languageTree.childNodes;
+  for (var i = 0, xml; xml = childNodes[i]; i++) {
+    // Search for the category that defines functions
+    if (xml.tagName) {
+      var tagName = xml.tagName.toUpperCase();
+      if (tagName ==='CATEGORY' && xml.getAttribute('custom') === 'PROCEDURE') {
+        // If there are blocks defined here, use these as the xmlList we are creating.
+        xmlList = Array.from(xml.childNodes).filter((item) => { return item.tagName && item.tagName.toUpperCase() === 'BLOCK'; });
+      }
+    }
   }
-  if (Blockly.Blocks['procedures_defnoreturn']) {
-    // <block type="procedures_defnoreturn" gap="16">
-    //     <field name="NAME">do something</field>
-    // </block>
-    var block = goog.dom.createDom('block');
-    block.setAttribute('type', 'procedures_defnoreturn');
-    block.setAttribute('gap', 16);
-    var nameField = goog.dom.createDom('field', null,
-        Blockly.Msg.PROCEDURES_DEFNORETURN_PROCEDURE);
-    nameField.setAttribute('name', 'NAME');
-    block.appendChild(nameField);
-    //xmlList.push(block);
-  }
-  if (Blockly.Blocks['procedures_defreturn']) {
-    // <block type="procedures_defreturn" gap="16">
-    //     <field name="NAME">do something</field>
-    // </block>
-    var block = goog.dom.createDom('block');
-    block.setAttribute('type', 'procedures_defreturn');
-    block.setAttribute('gap', 16);
-    var nameField = goog.dom.createDom('field', null,
-        Blockly.Msg.PROCEDURES_DEFRETURN_PROCEDURE);
-    nameField.setAttribute('name', 'NAME');
-    block.appendChild(nameField);
-    //xmlList.push(block);
-  }
-  if (Blockly.Blocks['procedures_ifreturn']) {
-    // <block type="procedures_ifreturn" gap="16"></block>
-    var block = goog.dom.createDom('block');
-    block.setAttribute('type', 'procedures_ifreturn');
-    block.setAttribute('gap', 16);
-    //xmlList.push(block);
+
+  if (xmlList.length === 0) {
+    // Where we haven't already got an xmlList, we fall back to our previous behaviour: manually setting up the function blocks.
+    // This should ensure backwards compatibility with existing Grok questions.
+    if (Blockly.Blocks['procedures_def_noargs_noreturn']) {
+      // <block type="procedures_def_noargs_noreturn" gap="16">
+      //     <field name="NAME">do something</field>
+      // </block>
+      var block = goog.dom.createDom('block');
+      block.setAttribute('type', 'procedures_def_noargs_noreturn');
+      block.setAttribute('gap', 16);
+      var nameField = goog.dom.createDom('field', null,
+          Blockly.Msg.PROCEDURES_DEFNORETURN_PROCEDURE);
+      nameField.setAttribute('name', 'NAME');
+      block.appendChild(nameField);
+      xmlList.push(block);
+    }
+    if (Blockly.Blocks['procedures_defnoreturn']) {
+      // <block type="procedures_defnoreturn" gap="16">
+      //     <field name="NAME">do something</field>
+      // </block>
+      var block = goog.dom.createDom('block');
+      block.setAttribute('type', 'procedures_defnoreturn');
+      block.setAttribute('gap', 16);
+      var nameField = goog.dom.createDom('field', null,
+          Blockly.Msg.PROCEDURES_DEFNORETURN_PROCEDURE);
+      nameField.setAttribute('name', 'NAME');
+      block.appendChild(nameField);
+      //xmlList.push(block);
+    }
+    if (Blockly.Blocks['procedures_defreturn']) {
+      // <block type="procedures_defreturn" gap="16">
+      //     <field name="NAME">do something</field>
+      // </block>
+      var block = goog.dom.createDom('block');
+      block.setAttribute('type', 'procedures_defreturn');
+      block.setAttribute('gap', 16);
+      var nameField = goog.dom.createDom('field', null,
+          Blockly.Msg.PROCEDURES_DEFRETURN_PROCEDURE);
+      nameField.setAttribute('name', 'NAME');
+      block.appendChild(nameField);
+      //xmlList.push(block);
+    }
+    if (Blockly.Blocks['procedures_ifreturn']) {
+      // <block type="procedures_ifreturn" gap="16"></block>
+      var block = goog.dom.createDom('block');
+      block.setAttribute('type', 'procedures_ifreturn');
+      block.setAttribute('gap', 16);
+      //xmlList.push(block);
+    }
   }
   if (xmlList.length) {
     // Add slightly larger gap between system blocks and user calls.
     xmlList[xmlList.length - 1].setAttribute('gap', 24);
   }
 
-  function populateProcedures(procedureList, templateName) {
-    for (var i = 0; i < procedureList.length; i++) {
-      var name = procedureList[i][0];
-      var args = procedureList[i][1];
-      // <block type="procedures_callnoreturn" gap="16">
-      //   <mutation name="do something">
-      //     <arg name="x"></arg>
-      //   </mutation>
-      // </block>
-      var block = goog.dom.createDom('block');
-      block.setAttribute('type', templateName);
-      block.setAttribute('gap', 16);
-      var mutation = goog.dom.createDom('mutation');
-      mutation.setAttribute('name', name);
-      block.appendChild(mutation);
-      for (var j = 0; j < args.length; j++) {
-        var arg = goog.dom.createDom('arg');
-        arg.setAttribute('name', args[j]);
-        mutation.appendChild(arg);
+  // Ensure that any procedure definition blocks have their matching call blocks also defined.
+  function populateProcedures(root) {
+    var blocks = root.getAllBlocks();
+    for (var i = 0; i < blocks.length; i++) {
+      if (blocks[i].getProcedureDef) {
+        // This block is a procedure definition, so populate the call block it matches with.
+        var templateName = blocks[i].callType_;
+        var tuple = blocks[i].getProcedureDef();
+        var name = tuple[0];
+        var args = tuple[1];
+        // <block type="procedures_callnoreturn" gap="16">
+        //   <mutation name="do something">
+        //     <arg name="x"></arg>
+        //   </mutation>
+        // </block>
+        var block = goog.dom.createDom('block');
+        block.setAttribute('type', templateName);
+        block.setAttribute('gap', 16);
+        var mutation = goog.dom.createDom('mutation');
+        mutation.setAttribute('name', name);
+        block.appendChild(mutation);
+        for (var j = 0; j < args.length; j++) {
+          var arg = goog.dom.createDom('arg');
+          arg.setAttribute('name', args[j]);
+          mutation.appendChild(arg);
+        }
+        xmlList.push(block);
       }
-      xmlList.push(block);
     }
   }
 
-  var tuple = Blockly.Procedures.allProcedures(workspace);
-  populateProcedures(tuple[0], 'procedures_callnoreturn');
-  populateProcedures(tuple[1], 'procedures_callreturn');
+  populateProcedures(workspace);
   return xmlList;
 };
 
@@ -305,8 +329,9 @@ Blockly.Procedures.mutateCallers = function(defBlock) {
  * @return {Blockly.Block} The procedure definition block, or null not found.
  */
 Blockly.Procedures.getDefinition = function(name, workspace) {
-  // Assume that a procedure definition is a top block.
-  var blocks = workspace.getTopBlocks(false);
+  // We can no longer assume that a procedure definition is a top block
+  // since script blocks can contain procedure definitions.
+  var blocks = workspace.getAllBlocks();
   for (var i = 0; i < blocks.length; i++) {
     if (blocks[i].getProcedureDef) {
       var tuple = blocks[i].getProcedureDef();

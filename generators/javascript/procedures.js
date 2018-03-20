@@ -29,7 +29,9 @@ goog.provide('Blockly.JavaScript.procedures');
 goog.require('Blockly.JavaScript');
 
 
-Blockly.JavaScript['procedures_defreturn'] = function(block) {
+Blockly.JavaScript['procedures_defreturn'] = function(block, options={}) {
+  // Specify noHoist = true to avoid hoisting the code block up into the definitions scope.
+  var noHoist = options.noHoist || false;
   // Define a procedure with a return value.
   var funcName = Blockly.JavaScript.variableDB_.getName(
       block.getFieldValue('NAME'), Blockly.Procedures.NAME_TYPE);
@@ -55,6 +57,9 @@ Blockly.JavaScript['procedures_defreturn'] = function(block) {
   }
   var code = 'function ' + funcName + '(' + args.join(', ') + ') {\n' +
       branch + returnValue + '}';
+  if (noHoist) {
+    return code;
+  }
   code = Blockly.JavaScript.scrub_(block, code);
   // Add % so as not to collide with helper functions in definitions list.
   Blockly.JavaScript.definitions_['%' + funcName] = code;
@@ -65,6 +70,12 @@ Blockly.JavaScript['procedures_defreturn'] = function(block) {
 // a procedure with a return value.
 Blockly.JavaScript['procedures_defnoreturn'] =
     Blockly.JavaScript['procedures_defreturn'];
+
+// Nesting event handlers are designed to sit inside a <script> tag, so we should
+// NOT hoist the definition up above the main body of code.
+Blockly.JavaScript['procedures_def_nesting_event_handler'] = (block) => {
+    return Blockly.JavaScript['procedures_defreturn'](block, {noHoist: true}) + '\n';
+}
 
 // Define a procedure that takes no arguments and with no return value.
 Blockly.JavaScript['procedures_def_noargs_noreturn'] = Blockly.JavaScript['procedures_defnoreturn'];
@@ -81,6 +92,10 @@ Blockly.JavaScript['procedures_callreturn'] = function(block) {
   var code = funcName + '(' + args.join(', ') + ')';
   return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
 };
+
+// Setting an event handler -- onclick="doFoo()" -- is just like calling a function.
+Blockly.JavaScript['procedures_set_event_handler'] =
+    Blockly.JavaScript['procedures_callreturn'];
 
 Blockly.JavaScript['procedures_callnoreturn'] = function(block) {
   // Call a procedure with no return value.

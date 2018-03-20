@@ -1102,6 +1102,8 @@ Blockly.Msg.PROCEDURES_DEFNORETURN_HELPURL = 'https://en.wikipedia.org/wiki/Subr
 /// [https://blockly-demo.appspot.com/static/apps/code/index.html?lang=en#c84aoc this sample
 /// function definition].
 Blockly.Msg.PROCEDURES_DEFNORETURN_TITLE = 'to';
+Blockly.Msg.PROCEDURES_DEF_NESTING_EVENT_HANDLER_TITLE = 'to';
+Blockly.Msg.PROCEDURES_DEF_NESTING_EVENT_HANDLER_TOOLTIP = 'Creates a function you can call.';
 Blockly.Msg.PROCEDURES_DEF_NOARGS_NORETURN_TITLE = 'to';
 /// default name - This acts as a placeholder for the name of a function on a
 /// function definition block, as shown on
