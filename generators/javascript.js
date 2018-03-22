@@ -67,6 +67,18 @@ Blockly.JavaScript.addReservedWords(
     'SVGAnimatedPoints,SVGColorProfileRule,SVGCSSRule,SVGExternalResourcesRequired,SVGFitToViewBox,SVGLangSpace,SVGLocatable,SVGRenderingIntent,SVGStylable,SVGTests,SVGTextContentElement,SVGTextPositioningElement,SVGTransformable,SVGUnitTypes,SVGURIReference,SVGViewSpec,SVGZoomAndPan');
 
 /**
+ * Option to enable using 'let' instead of 'var' in variable declarations.
+ * @type {!boolean}
+ */
+Blockly.JavaScript.USE_LET_FOR_VARIABLE_DECLARATION = false;
+
+/**
+ * Option to enable using '==='/'!==' instead of '=='/'!=' for comparisons.
+ * @type {!boolean}
+ */
+Blockly.JavaScript.USE_STRICT_EQUALITY = false;
+
+/**
  * Order of operation ENUMs.
  * https://developer.mozilla.org/en/JavaScript/Reference/Operators/Operator_Precedence
  */
@@ -329,4 +341,21 @@ Blockly.JavaScript.getAdjusted = function(block, atId, opt_delta, opt_negate,
     }
   }
   return at;
+};
+
+/**
+ * @return {!string} Either 'let ' or 'var ' (with the trailing space) depending on the option.
+ */
+Blockly.JavaScript.getVariableDeclLetVar = function() {
+  return Blockly.JavaScript.USE_LET_FOR_VARIABLE_DECLARATION ? 'let ' : 'var ';
+};
+
+/**
+ * @param {boolean} equals Whether this is == or !=
+ * @return {!string} Either ' == '/' != ' or ' === '/' !== ' (with the surrounding spaces) depending on the option.
+ */
+Blockly.JavaScript.getEqualityOperator = function(equals) {
+  var op = equals ? '==' : '!=';
+  op += Blockly.JavaScript.USE_STRICT_EQUALITY ? '=' : '';
+  return op;
 };
