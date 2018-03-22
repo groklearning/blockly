@@ -352,7 +352,7 @@ Blockly.JavaScript.getVariableDeclLetVar = function() {
 
 /**
  * @param {boolean} equals Whether this is == or !=
- * @return {!string} Either ' == '/' != ' or ' === '/' !== ' (with the surrounding spaces) depending on the option.
+ * @return {!string} Either '=='/'!=' or '==='/'!==' depending on the option.
  */
 Blockly.JavaScript.getEqualityOperator = function(equals) {
   var op = equals ? '==' : '!=';

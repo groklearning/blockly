@@ -55,15 +55,16 @@ Blockly.JavaScript['controls_ifelse'] = Blockly.JavaScript['controls_if'];
 Blockly.JavaScript['logic_compare'] = function(block) {
   // Comparison operator.
   var OPERATORS = {
-    'EQ': '==',
-    'NEQ': '!=',
+    'EQ': Blockly.JavaScript.getEqualityOperator(true),
+    'NEQ': Blockly.JavaScript.getEqualityOperator(false),
     'LT': '<',
     'LTE': '<=',
     'GT': '>',
     'GTE': '>='
   };
-  var operator = OPERATORS[block.getFieldValue('OP')];
-  var order = (operator == '==' || operator == '!=') ?
+  var op = block.getFieldValue('OP');
+  var operator = OPERATORS[op];
+  var order = (op == 'EQ' || op == 'NEQ') ?
       Blockly.JavaScript.ORDER_EQUALITY : Blockly.JavaScript.ORDER_RELATIONAL;
   var argument0 = Blockly.JavaScript.valueToCode(block, 'A', order) || '0';
   var argument1 = Blockly.JavaScript.valueToCode(block, 'B', order) || '0';

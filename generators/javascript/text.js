@@ -312,7 +312,7 @@ Blockly.JavaScript['text_count'] = function(block) {
       'textCount',
       ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
           '(haystack, needle) {',
-       '  if (needle.length === 0) {',
+       '  if (needle.length ' + Blockly.JavaScript.getEqualityOperator(true) + ' 0) {',
        '    return haystack.length + 1;',
        '  } else {',
        '    return haystack.split(needle).length - 1;',
