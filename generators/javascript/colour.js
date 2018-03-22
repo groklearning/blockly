@@ -40,7 +40,7 @@ Blockly.JavaScript['colour_random'] = function(block) {
   var functionName = Blockly.JavaScript.provideFunction_(
       'colourRandom',
       ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ + '() {',
-        '  var num = Math.floor(Math.random() * Math.pow(2, 24));',
+        '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'num = Math.floor(Math.random() * Math.pow(2, 24));',
         '  return \'#\' + (\'00000\' + num.toString(16)).substr(-6);',
         '}']);
   var code = functionName + '()';
@@ -84,15 +84,15 @@ Blockly.JavaScript['colour_blend'] = function(block) {
       ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
           '(c1, c2, ratio) {',
        '  ratio = Math.max(Math.min(Number(ratio), 1), 0);',
-       '  var r1 = parseInt(c1.substring(1, 3), 16);',
-       '  var g1 = parseInt(c1.substring(3, 5), 16);',
-       '  var b1 = parseInt(c1.substring(5, 7), 16);',
-       '  var r2 = parseInt(c2.substring(1, 3), 16);',
-       '  var g2 = parseInt(c2.substring(3, 5), 16);',
-       '  var b2 = parseInt(c2.substring(5, 7), 16);',
-       '  var r = Math.round(r1 * (1 - ratio) + r2 * ratio);',
-       '  var g = Math.round(g1 * (1 - ratio) + g2 * ratio);',
-       '  var b = Math.round(b1 * (1 - ratio) + b2 * ratio);',
+       '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'r1 = parseInt(c1.substring(1, 3), 16);',
+       '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'g1 = parseInt(c1.substring(3, 5), 16);',
+       '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'b1 = parseInt(c1.substring(5, 7), 16);',
+       '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'r2 = parseInt(c2.substring(1, 3), 16);',
+       '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'g2 = parseInt(c2.substring(3, 5), 16);',
+       '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'b2 = parseInt(c2.substring(5, 7), 16);',
+       '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'r = Math.round(r1 * (1 - ratio) + r2 * ratio);',
+       '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'g = Math.round(g1 * (1 - ratio) + g2 * ratio);',
+       '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'b = Math.round(b1 * (1 - ratio) + b2 * ratio);',
        '  r = (\'0\' + (r || 0).toString(16)).slice(-2);',
        '  g = (\'0\' + (g || 0).toString(16)).slice(-2);',
        '  b = (\'0\' + (b || 0).toString(16)).slice(-2);',

@@ -187,7 +187,7 @@ Blockly.JavaScript.init = function(workspace) {
   // Declare all of the variables.
   if (defvars.length) {
     Blockly.JavaScript.definitions_['variables'] =
-        'var ' + defvars.join(', ') + ';';
+        Blockly.JavaScript.getVariableDeclLetVar() + defvars.join(', ') + ';';
   }
 };
 

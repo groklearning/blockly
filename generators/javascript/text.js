@@ -131,7 +131,7 @@ Blockly.JavaScript['text_charAt'] = function(block) {
           'textRandomLetter',
           ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
               '(text) {',
-           '  var x = Math.floor(Math.random() * text.length);',
+           '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'x = Math.floor(Math.random() * text.length);',
            '  return text[x];',
            '}']);
       var code = functionName + '(' + text + ')';
@@ -219,8 +219,8 @@ Blockly.JavaScript['text_getSubstring'] = function(block) {
         ((where1 == 'FROM_END' || where1 == 'FROM_START') ? ', at1' : '') +
         ((where2 == 'FROM_END' || where2 == 'FROM_START') ? ', at2' : '') +
         ') {',
-          '  var start = ' + getIndex_('sequence', where1, 'at1') + ';',
-          '  var end = ' + getIndex_('sequence', where2, 'at2') + ' + 1;',
+          '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'start = ' + getIndex_('sequence', where1, 'at1') + ';',
+          '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'end = ' + getIndex_('sequence', where2, 'at2') + ' + 1;',
           '  return sequence.slice(start, end);',
           '}']);
     var code = functionName + '(' + text +

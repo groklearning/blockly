@@ -51,8 +51,8 @@ Blockly.JavaScript['lists_repeat'] = function(block) {
       'listsRepeat',
       ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
           '(value, n) {',
-       '  var array = [];',
-       '  for (var i = 0; i < n; i++) {',
+       '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'array = [];',
+       '  for (' + Blockly.JavaScript.getVariableDeclLetVar() + 'i = 0; i < n; i++) {',
        '    array[i] = value;',
        '  }',
        '  return array;',
@@ -155,7 +155,7 @@ Blockly.JavaScript['lists_getIndex'] = function(block) {
           'listsGetRandomItem',
           ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
               '(list, remove) {',
-           '  var x = Math.floor(Math.random() * list.length);',
+           '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'x = Math.floor(Math.random() * list.length);',
            '  if (remove) {',
            '    return list.splice(x, 1)[0];',
            '  } else {',
@@ -190,7 +190,7 @@ Blockly.JavaScript['lists_setIndex'] = function(block) {
     }
     var listVar = Blockly.JavaScript.variableDB_.getDistinctName(
         'tmpList', Blockly.Variables.NAME_TYPE);
-    var code = 'var ' + listVar + ' = ' + list + ';\n';
+    var code = Blockly.JavaScript.getVariableDeclLetVar() + listVar + ' = ' + list + ';\n';
     list = listVar;
     return code;
   }
@@ -236,7 +236,7 @@ Blockly.JavaScript['lists_setIndex'] = function(block) {
       var code = cacheList();
       var xVar = Blockly.JavaScript.variableDB_.getDistinctName(
           'tmpX', Blockly.Variables.NAME_TYPE);
-      code += 'var ' + xVar + ' = Math.floor(Math.random() * ' + list +
+      code += Blockly.JavaScript.getVariableDeclLetVar() + xVar + ' = Math.floor(Math.random() * ' + list +
           '.length);\n';
       if (mode == 'SET') {
         code += list + '[' + xVar + '] = ' + value + ';\n';
@@ -328,8 +328,8 @@ Blockly.JavaScript['lists_getSublist'] = function(block) {
             ((where1 == 'FROM_END' || where1 == 'FROM_START') ? ', at1' : '') +
             ((where2 == 'FROM_END' || where2 == 'FROM_START') ? ', at2' : '') +
             ') {',
-          '  var start = ' + getIndex_('sequence', where1, 'at1') + ';',
-          '  var end = ' + getIndex_('sequence', where2, 'at2') + ' + 1;',
+          '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'start = ' + getIndex_('sequence', where1, 'at1') + ';',
+          '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'end = ' + getIndex_('sequence', where2, 'at2') + ' + 1;',
           '  return sequence.slice(start, end);',
           '}']);
     var code = functionName + '(' + list +
@@ -352,7 +352,7 @@ Blockly.JavaScript['lists_sort'] = function(block) {
       'listsGetSortCompare',
       ['function ' + Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_ +
           '(type, direction) {',
-       '  var compareFuncs = {',
+       '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'compareFuncs = {',
        '    "NUMERIC": function(a, b) {',
        '        return parseFloat(a) - parseFloat(b); },',
        '    "TEXT": function(a, b) {',
@@ -361,7 +361,7 @@ Blockly.JavaScript['lists_sort'] = function(block) {
        '        return a.toString().toLowerCase() > ' +
           'b.toString().toLowerCase() ? 1 : -1; },',
        '  };',
-       '  var compare = compareFuncs[type];',
+       '  ' + Blockly.JavaScript.getVariableDeclLetVar() + 'compare = compareFuncs[type];',
        '  return function(a, b) { return compare(a, b) * direction; }',
        '}']);
   return [list + '.slice().sort(' +
