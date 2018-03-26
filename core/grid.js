@@ -219,6 +219,10 @@ Blockly.Grid.createDom = function(rnd, gridOptions, defs) {
           {'stroke': gridOptions['colour']}, gridPattern);
     }
     // x1, y1, x1, x2 properties will be set later in update.
+  } else {
+    // https://github.com/google/blockly/issues/1484
+    // Edge 16 doesn't handle empty patterns
+    Blockly.utils.createSvgElement('line', {}, gridPattern);
   }
   return gridPattern;
 };
