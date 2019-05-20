@@ -507,7 +507,7 @@ Blockly.Css.CONTENT = [
     'padding: 0 !important;',
     /* max-height value is same as the constant
      * Blockly.FieldDropdown.MAX_MENU_HEIGHT defined in field_dropdown.js. */
-    'max-height: 300px !important;',
+    'max-height: 80px !important;',
   '}',
 
   /* Override the default Closure URL. */
