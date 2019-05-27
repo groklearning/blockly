@@ -83,7 +83,7 @@ Blockly.FieldDropdown.CHECKMARK_OVERHANG = 25;
  * Maximum height of the dropdown menu,it's also referenced in css.js as
  * part of .blocklyDropdownMenu.
  */
-Blockly.FieldDropdown.MAX_MENU_HEIGHT = 300;
+Blockly.FieldDropdown.MAX_MENU_HEIGHT = 80; // three rows, plus a little to show there's more.
 
 /**
  * Android can't (in 2014) display "▾", so use "▼" instead.
